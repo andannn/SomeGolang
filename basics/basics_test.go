@@ -2,15 +2,9 @@ package basics
 
 import (
 	"math"
+	"somegolang/internal/testutil"
 	"testing"
 )
-
-func assertEqual[T comparable](t *testing.T, got, want T) {
-	t.Helper()
-	if got != want {
-		t.Fatalf("got %v, want %v", got, want)
-	}
-}
 
 func TestSwap(t *testing.T) {
 	f := func(x, y string) (string, string) {
@@ -18,9 +12,8 @@ func TestSwap(t *testing.T) {
 	}
 
 	a, b := f("hello", "world")
-	assertEqual(t, a, "world")
-	assertEqual(t, b, "hello")
-
+	testutil.AssertEqual(t, a, "world")
+	testutil.AssertEqual(t, b, "hello")
 }
 
 func TestGoPassByValue_String(t *testing.T) {
@@ -32,7 +25,7 @@ func TestGoPassByValue_String(t *testing.T) {
 
 	change(original)
 
-	assertEqual(t, original, "hello")
+	testutil.AssertEqual(t, original, "hello")
 }
 
 func TestNamedReturnValues(t *testing.T) {
@@ -43,8 +36,8 @@ func TestNamedReturnValues(t *testing.T) {
 	}
 
 	a, b := split(17)
-	assertEqual(t, a, 7)
-	assertEqual(t, b, 10)
+	testutil.AssertEqual(t, a, 7)
+	testutil.AssertEqual(t, b, 10)
 }
 
 func TestForLoop1(t *testing.T) {
@@ -53,7 +46,7 @@ func TestForLoop1(t *testing.T) {
 		sum += i
 	}
 
-	assertEqual(t, sum, 3)
+	testutil.AssertEqual(t, sum, 3)
 }
 
 func TestForLoop2(t *testing.T) {
@@ -62,7 +55,7 @@ func TestForLoop2(t *testing.T) {
 		sum += sum
 	}
 
-	assertEqual(t, sum, 1024)
+	testutil.AssertEqual(t, sum, 1024)
 }
 
 func TestForLoop3(t *testing.T) {
@@ -74,7 +67,7 @@ func TestForLoop3(t *testing.T) {
 		}
 	}
 
-	assertEqual(t, sum, 3)
+	testutil.AssertEqual(t, sum, 3)
 }
 
 func TestForLoop4(t *testing.T) {
@@ -89,7 +82,7 @@ func TestDefer1(t *testing.T) {
 	f := func() {
 		i := 0
 		// defer会把函数调用压到 defer 栈里，同时当场把这次调用要用到的参数先算出来。
-		defer assertEqual(t, i, 0)
+		defer testutil.AssertEqual(t, i, 0)
 		i++
 	}
 
@@ -101,7 +94,7 @@ func TestDefer2(t *testing.T) {
 		i := 0
 		// 用闭包捕获i，defer 执行时找到i的值
 		defer func() {
-			assertEqual(t, i, 1)
+			testutil.AssertEqual(t, i, 1)
 		}()
 
 		i++
@@ -117,8 +110,8 @@ func TestSturct(t *testing.T) {
 	}
 
 	v := Vertex{1, 3}
-	assertEqual(t, v.X, 1)
-	assertEqual(t, v.Y, 3)
+	testutil.AssertEqual(t, v.X, 1)
+	testutil.AssertEqual(t, v.Y, 3)
 }
 
 func TestStructWithPointer(t *testing.T) {
@@ -130,8 +123,8 @@ func TestStructWithPointer(t *testing.T) {
 	v := Vertex{1, 3}
 	p := &v
 	p.X = 2
-	assertEqual(t, v.X, 2)
-	assertEqual(t, v.Y, 3)
+	testutil.AssertEqual(t, v.X, 2)
+	testutil.AssertEqual(t, v.Y, 3)
 }
 
 type MyFloat float64
@@ -145,7 +138,7 @@ func (f MyFloat) abs() float64 {
 
 func TestStructWithMethod(t *testing.T) {
 	f := MyFloat(-1)
-	assertEqual(t, f.abs(), 1)
+	testutil.AssertEqual(t, f.abs(), 1)
 }
 
 type Vertex struct {
@@ -165,8 +158,8 @@ func TestStructWithMethod2(t *testing.T) {
 	v := Vertex{3, 4}
 	//	v.Scale(10)
 	(&v).Scale(10)
-	assertEqual(t, v.X, 30)
-	assertEqual(t, v.Y, 40)
+	testutil.AssertEqual(t, v.X, 30)
+	testutil.AssertEqual(t, v.Y, 40)
 }
 
 func TestStructWithMethod3(t *testing.T) {
@@ -174,5 +167,5 @@ func TestStructWithMethod3(t *testing.T) {
 	// abs := v.Abs()
 	p := &v
 	abs := (*p).Abs()
-	assertEqual(t, abs, 5)
+	testutil.AssertEqual(t, abs, 5)
 }
