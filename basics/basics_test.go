@@ -169,3 +169,4 @@ func TestStructWithMethod3(t *testing.T) {
 	abs := (*p).Abs()
 	testutil.AssertEqual(t, abs, 5)
 }
+
